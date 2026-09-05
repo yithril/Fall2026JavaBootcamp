@@ -1,0 +1,44 @@
+Data Exploration Exercise
+Part 1: Where is the data?
+Below is a list of places where data is all around you.
+Your job: For each venue, brainstorm what kinds of data you could collect there. There's no wrong answer—just think like a detective!
+
+Venues:
+Grocery Store
+
+Airport
+
+Hospital
+
+School
+
+Coffee Shop
+
+Movie Theater
+
+Gym
+
+Music Streaming App
+
+Online Clothing Store
+
+Library
+
+You can add your own venue if you'd like—get creative!
+
+Part 2: How is the data represented?
+Now take the data you brainstormed and classify how it is represented.
+
+Some common types of data:
+
+Numbers (e.g. temperature, price, time)
+
+Text (e.g. names, job titles, descriptions)
+
+Numbers + Letters (e.g. flight numbers, license plates, user IDs)
+
+Yes/No or True/False (e.g. is the order complete? is the seat taken?)
+
+Choices from a list (e.g. type of coffee, payment method, genre)
+
+For each piece of data you came up with, identify how it's stored or shown.
