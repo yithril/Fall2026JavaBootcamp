@@ -1,0 +1,52 @@
+Review Command Line - Answer the following questions:
+
+1. In your own words, what is the command prompt?
+2. What does the command "cd" stand for?
+3. If I want to change my current directory to "C:/Bootcamp/FallJavaBootcamp2026", what would I type?
+4. What command allows me to see all files in the current directory?
+5. What does "cd .." do?
+6. In your own words what is Git? Is there a difference between GitHub and Git?
+7. A collection of code and files in a single place of storage is called a ____________
+8. What does the command "git clone" do?
+
+Review Basic Java Variables
+
+Instructions: For each real-life situation, choose the Java data type that best represents the information.
+
+Use these types: int, long, float, double, boolean, char, String
+
+A person's age in whole years: __________
+
+The population of a large city: __________
+
+The distance between two cities in miles, including decimal values: __________
+
+The price of a cup of coffee, such as $3.50: __________
+
+Whether a student has passed an exam (true or false): __________
+
+A student's letter grade, such as A, B, or C: __________
+
+A person's height in meters, such as 1.75: __________
+
+The number of milliseconds recorded by a system over a very long period: __________
+
+A person's phone number, such as 248-555-0198: __________
+
+The number of students enrolled in a class: __________
+
+A United States ZIP code, such as 00501: __________
+
+The number of items in a shopping cart: __________
+
+The temperature outside in degrees Celsius, such as 22.6: __________
+
+Whether a door is locked: __________
+
+The first initial of a person's first name: __________
+
+The number of people who have visited a website, potentially reaching billions: __________
+
+A username, such as GoPlayer42: __________
+
+The number of hours a student studied, such as 2.5: __________
