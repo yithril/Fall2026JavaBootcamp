@@ -1,0 +1,31 @@
+As you are coding, ever so often, "commit" your work. What this means is, you are saving a snapshot of your code as you go along.
+
+The cool thing about commits is that they can be reversed. Don't like your code? Hit the rewind button.
+
+AS YOU ARE PROGRAMMING:
+
+When you finish a thought, do the following commands. Be sure your terminal is in the same folder as your GitHub repo!
+
+git add -A
+git commit -m "What does the code you just wrote do?"
+
+The biggest beginner mistake is to forget to put the -m after the word commit and to write a commit message. The message is important! It tells other devs what your commit is all about.
+
+If you forget to type the -m, you might end up in the editor. Don't panic, you can still finish your commit, it'll just take longer.
+
+-Press i to start typing.
+-Type your commit message at the top.
+-Press Esc.
+-Type :wq
+-Press Enter.
+
+You can add and commit as many times as you want. Think of committing like finishing a thought. 
+
+Ready to turn it in? Make sure you thoroughly test your program, ensuring that it works as expected. When you are ready to "turn it in" as it were:
+
+git push
+
+The push command copies your code and sends it to GitHub.com where your instructor will be able to see your code. 
+
+You do NOT have to push every time you commit. You can commit many times and then push once. That is totally normal.
+
