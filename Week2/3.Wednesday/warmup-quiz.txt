@@ -1,0 +1,36 @@
+Warmup Quiz: Classes in OOP
+
+Part 1: Quick Questions
+
+What is a class in object-oriented programming?
+a) A function that runs automatically
+b) The basic building block of software in OOP
+c) A place to store text files
+
+What two things can a class contain?
+(Hint: think of what describes something and what it can do.)
+
+What does a constructor do when we create a new object?
+
+Give an example of a real-world thing that could be represented as a class.
+(Example: A Car class might have color, make, and year as properties.)
+
+Part 2: Fill in the Blank
+
+A class describes a __________ in the real world.
+
+A constructor helps us __________ an object.
+
+A getter method is used to __________ a private property.
+
+A setter method is used to __________ a private property.
+
+Part 3: Extended Questions (Optional / Extra Credit)
+
+Imagine you are making a Student class. What three properties (with data types) might it have?
+
+Why do you think programmers make fields private instead of public?
+
+If you had to design a GameCharacter class, what would its constructor need?
+
+Think of two different classes (like Book and Library). How might they work together?

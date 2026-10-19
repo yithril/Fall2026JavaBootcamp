@@ -1,0 +1,11 @@
+Question: Write a Java program that uses a for loop to print all the numbers from 20 to 1 (descending), 
+and then use a while loop to print all the numbers from 1 to 19 (ascending).
+
+Here's the kicker: Can you do it without IntelliJ? Open up notepad (or Notes on Mac) and give it a try!
+
+CHALLENGE QUESTION
+
+You are tasked with writing a Java program to find the first three numbers between 1 and 100 that are divisible by either 7 and 9. 
+Write a program using a loop (for or while) to find and print these numbers. Use either break or continue to control the flow of your loop. 
+Don't forget to include comments to explain your code.
+
