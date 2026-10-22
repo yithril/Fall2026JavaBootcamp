@@ -8,7 +8,7 @@ public class Main {
                 new BankAccount(100, "Jonathan Hop");
 
         //balance is private it's not accessible here
-        //bankAccount.balance = 10000000;
+        //bankAccount.balance = 10_000_000;
 
         //I'm calling  the deposit method
         bankAccount.deposit(1000);

@@ -3,6 +3,7 @@ package org.example;
 public class BankAccount {
     private double balance;
     private String accountHolder;
+    private int pinNumber;
 
     public BankAccount(double balance, String accountHolder){
         this.balance = balance;
@@ -21,5 +22,9 @@ public class BankAccount {
 
     public double getBalance() {
         return balance;
+    }
+
+    public void setPinNumber(int pinNumber){
+        this.pinNumber = pinNumber;
     }
 }
