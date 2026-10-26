@@ -1,0 +1,15 @@
+Use the Code Blocks Activity.java file for the warmup this morning.
+It's NOT an IntelliJ project, but you can still open the file itself in IntelliJ
+by double clicking on it
+
+Given the sample code please perform the following tasks:
+
+1. Identify all of the code blocks. State which line they begin on, and which they end on.
+
+I'll do the first one for free:
+
+The class CodeBlocksActivity begins on line 1 and ends on line 33. 
+
+2. Why won't lines 22 and 23 compile? (You may remove these lines if you wish to run the program).
+
+3. Without running the program, what do you expect the console output to be? Be exact.
