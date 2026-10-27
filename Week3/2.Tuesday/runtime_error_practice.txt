@@ -1,0 +1,48 @@
+# Runtime Error Detective
+
+## Your Mission
+
+Read the `Main` class carefully. Your job is to identify places where the program could encounter a runtime error while it is running.
+
+The code may compile successfully and still fail when a user enters certain information or when the program tries to perform an operation.
+
+You do **not** need to fix the code yet. First, investigate what could go wrong and explain why.
+
+## Step 1: Read the Code
+
+Read the program from top to bottom. Pay attention to the order in which each statement executes.
+
+Ask yourself: What happens if the user enters different values? Does the program always behave as expected?
+
+## Step 2: Use This Checklist
+
+As you examine the code, consider these questions:
+
+- **User input:** What happens if the user enters text when the program expects a number?
+- **Arrays:** What conditions must be true for an array index to be valid?
+- **Objects:** Could an object or one of its fields contain `null`? What happens if the program tries to use it?
+- **Method calls:** What must be true for a method call to work successfully?
+- **Arithmetic:** Are the operations safe with the values being used? Does the program make any assumptions about those values?
+- **Execution order:** If an error occurs, which statement causes it? What happens to the statements that follow?
+
+Remember: Not every line is dangerous. Some operations will work correctly under the expected conditions. Your job is to distinguish between safe operations and operations that could fail.
+
+## Step 3: Document Your Findings
+
+For each line you believe could cause a runtime error, record:
+
+1. **Location:** Which statement could fail?
+2. **Condition:** What would have to happen for it to fail?
+3. **Explanation:** Why would that condition cause a problem?
+4. **Recovery:** Would a `try-catch` be useful here? If so, what should the program do when the error occurs?
+
+## Step 4: Think Like a Developer
+
+Before you finish, review your answers.
+
+- Did you explain *why* each statement could fail?
+- Did you consider different possible user inputs?
+- Did you distinguish between an operation that can throw an exception and one that is safe under the given conditions?
+- Did you consider whether the program could recover and continue running?
+
+**Goal:** Learn to recognize potential runtime errors and think carefully about where exception handling might be useful.
