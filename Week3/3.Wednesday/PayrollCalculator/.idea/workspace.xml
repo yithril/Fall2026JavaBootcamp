@@ -4,21 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e52adbf7-184a-4851-ad5a-c7b30e3a1d3f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../../2.Tuesday/FileReaderExample/src/main/java/org/example/PoemReader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../2.Tuesday/FileReaderExample/src/main/resources/example.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../2.Tuesday/RuntimeErrorPractice/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../2.Tuesday/RuntimeErrorPractice/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/codeexamples/ListExample.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/codeexamples/SplitExample.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Employee.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/FileManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../2.Tuesday/RuntimeErrorPractice/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../2.Tuesday/RuntimeErrorPractice/.idea/vcs.xml" afterDir="false" />
-    </list>
+    <list default="true" id="e52adbf7-184a-4851-ad5a-c7b30e3a1d3f" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -53,7 +39,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Bootcamp/SpringJavaBootcamp2026/Week3-Exceptions/2.Tuesday/FileReaderExample"
+    "last_opened_file_path": "C:/Bootcamp/SpringJavaBootcamp2026/InstructorWorkshops/Workshop3_OnlineStore-Instructor"
   }
 }]]></component>
   <component name="RecentsManager">
