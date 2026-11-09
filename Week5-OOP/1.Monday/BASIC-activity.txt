@@ -1,0 +1,75 @@
+10 PRINT "Welcome to BASIC Movie Theater"
+20 PRINT "1. Avengers (PG-13)"
+30 PRINT "2. Inside Out (PG)"
+40 PRINT "Enter your choice (1 or 2):"
+50 INPUT CHOICE
+
+60 IF CHOICE = 1 THEN GOTO 100
+70 IF CHOICE = 2 THEN GOTO 200
+80 PRINT "Invalid choice. Try again next time!"
+90 GOTO 10
+
+REM ==== MOVIE 1 LOGIC ====
+100 PRINT "You chose Avengers."
+110 LET MOVIE_TITLE$ = "Avengers"
+112 LET MOVIE_YEAR = 2012  ' Inserted later
+120 LET MOVIE_RATING$ = "PG-13"
+130 LET MOVIE_RUNTIME = 120
+135 LET MOVIE_GENRE$ = "Action"  ' Inserted later
+140 LET MOVIE_SEATS = 50
+150 PRINT "Movie: "; MOVIE_TITLE$
+160 PRINT "Year: "; MOVIE_YEAR
+170 PRINT "Genre: "; MOVIE_GENRE$
+180 PRINT "Rating: "; MOVIE_RATING$
+190 PRINT "Runtime (min): "; MOVIE_RUNTIME
+200 PRINT "Available seats: "; MOVIE_SEATS
+
+210 GOTO 400
+
+REM ==== MOVIE 2 LOGIC ====
+200 PRINT "You chose Inside Out."
+210 LET MOVIE_TITLE$ = "Inside Out"
+212 LET MOVIE_YEAR = 2015  ' Inserted later
+220 LET MOVIE_RATING$ = "PG"
+230 LET MOVIE_RUNTIME = 95
+235 LET MOVIE_GENRE$ = "Animation"  ' Inserted later
+240 LET MOVIE_SEATS = 30
+250 PRINT "Movie: "; MOVIE_TITLE$
+260 PRINT "Year: "; MOVIE_YEAR
+270 PRINT "Genre: "; MOVIE_GENRE$
+280 PRINT "Rating: "; MOVIE_RATING$
+290 PRINT "Runtime (min): "; MOVIE_RUNTIME
+300 PRINT "Available seats: "; MOVIE_SEATS
+
+310 GOTO 400
+
+REM ==== COMMON TICKET BUYING LOGIC ====
+400 PRINT "How many tickets would you like to buy?"
+410 INPUT TICKETS
+420 IF TICKETS > MOVIE_SEATS THEN
+    PRINT "Sorry, not enough seats available!"
+    GOTO 600
+END IF
+
+430 LET MOVIE_SEATS = MOVIE_SEATS - TICKETS
+440 PRINT "Tickets purchased: "; TICKETS
+450 PRINT "Seats remaining: "; MOVIE_SEATS
+
+REM ==== CALCULATE TOTAL PRICE ====
+460 PRINT "Calculating total price..."
+465 PRINT "Please wait..."  ' Inserted later
+470 IF MOVIE_TITLE$ = "Avengers" THEN
+    LET PRICE = 10
+ELSE IF MOVIE_TITLE$ = "Inside Out" THEN
+    LET PRICE = 8
+END IF
+
+480 LET TOTAL = PRICE * TICKETS
+490 PRINT "Total price: "
+500 PRINT TOTAL
+
+REM ==== END OR BUY AGAIN ====
+600 PRINT "Would you like to buy tickets for another movie? (Y/N)"
+610 INPUT AGAIN$
+620 IF AGAIN$ = "Y" THEN GOTO 10
+630 PRINT "Thank you for your purchase. Goodbye!"

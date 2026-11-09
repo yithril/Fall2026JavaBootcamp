@@ -1,0 +1,42 @@
+BASIC Code Reading Activity: Movie Theater Program
+Instructions:
+
+Today we are doing a “theater of the mind” activity.
+Your goal is to read through the BASIC code and imagine the flow of the program as if it is running.
+
+    Start at the top of the code and follow along in line number order.
+
+    Every time you see a GOTO, pause and figure out where the program jumps to next.
+
+    Your job is to simulate the program in your mind and be ready to explain what happens step by step.
+
+We will practice leading each other through the flow of the program by tracing which lines the computer would run for different choices.
+Questions to Answer:
+
+    What does GOTO do in this program? Why is it important?
+
+    When the user picks Movie 1:
+
+        What information is shown?
+
+        Where does the program jump next?
+
+    When the user picks Movie 2:
+
+        Is there repeated code between Movie 1 and Movie 2?
+
+    How does the program handle ticket purchases?
+
+        What happens if the user tries to buy more tickets than are available?
+
+    How is the total price calculated?
+
+        Is the logic stored in one spot, or duplicated?
+
+Reflection:
+
+    Would it be simple or difficult to add a third movie? Why?
+
+    What challenges do you notice about how the program moves between sections?
+
+After you finish, we will walk through the code together as a class and discuss how modern programming (methods and classes) solve these problems.

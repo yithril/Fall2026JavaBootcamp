@@ -1,0 +1,21 @@
+We are making a simple program for a movie theater. We have these classes:
+
+    Movie: holds information about a movie (title, rating, runtime)
+
+    Theater: holds info about the theater (theater number, list of seats)
+
+    Seat: represents a single seat (seat number, whether it’s taken)
+
+    Ticket: represents a ticket for a specific movie, theater, and seat
+
+1. Where should we store the title and runtime of the movie?
+2. Where should we keep track of whether a seat is available or taken?
+3. Who should be responsible for assigning a specific seat when someone buys a ticket?
+4. When we print the ticket, where do we get the info for:
+
+    Movie name
+    Theater number
+    Seat number
+
+5. BONUS The Seat class has a Boolean property named: isTaken. Should other classes just flip that value directly, or should we hide it and give them a method like markAsTaken()? Why or why not?
+

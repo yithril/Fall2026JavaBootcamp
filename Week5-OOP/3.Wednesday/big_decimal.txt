@@ -1,0 +1,82 @@
+# BigDecimal Practice Exercise: Restaurant Checkout Calculator
+
+## Objective
+
+Create a Java program that simulates a restaurant checkout system using `BigDecimal`.
+
+Do NOT use:
+- `double`
+- `float`
+
+---
+
+# Starting Values
+
+Use these values in your program:
+
+| Name | Value |
+|---|---|
+| subtotal | 85.50 |
+| tax rate | 6% |
+| tip rate | 20% |
+
+---
+
+# Program Requirements and Business Logic
+
+## 1. Apply Discount
+
+If the subtotal is greater than `$50.00`:
+
+- apply a 10% discount
+- calculate the discounted subtotal
+
+---
+
+## 2. Calculate Tax
+
+- tax is based on the discounted subtotal
+- round tax to 2 decimal places
+
+---
+
+## 3. Calculate Tip
+
+- tip is based on the discounted subtotal
+- round tip to 2 decimal places
+
+---
+
+## 4. Calculate Final Total
+
+The final total should include:
+- discounted subtotal
+- tax
+- tip
+
+Round the final total to 2 decimal places.
+
+---
+
+## 5. Print Receipt
+
+Print:
+- original subtotal
+- discount amount
+- discounted subtotal
+- tax
+- tip
+- final total
+
+Example format:
+
+```text
+Original Subtotal: $85.50
+Discount: $8.55
+Discounted Subtotal: $76.95
+Tax: $4.62
+Tip: $15.39
+Final Total: $96.96
+```
+
+---
