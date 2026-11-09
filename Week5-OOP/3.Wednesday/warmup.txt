@@ -1,21 +1,15 @@
-We are making a simple program for a movie theater. We have these classes:
+Scenario: Imagine you're designing a Restaurant Management System. In this system, there are different components, such as chefs, customers, menus, and orders. Your task is to identify the relationships between these objects.
 
-    Movie: holds information about a movie (title, rating, runtime)
+    Step 1: Identify Objects
+        Take a few minutes to list the various objects you might encounter in a restaurant management system (e.g., Chef, Customer, Menu, Order, Restaurant).
 
-    Theater: holds info about the theater (theater number, list of seats)
+    Step 2: Identify Relationships
+        Think about how these objects relate to each other. For instance, a restaurant can have many chefs, and an order can contain multiple menu items.
+        Determine whether the relationship is:
+            One-to-One: An instance of class A has a single instance of class B.
+            One-to-Many: An instance of class A has multiple instances of class B.
+            Many-to-One: Multiple instances of class A relate to a single instance of class B.
+            Many-to-Many: Multiple instances of class A relate to multiple instances of class B.
 
-    Seat: represents a single seat (seat number, whether it’s taken)
-
-    Ticket: represents a ticket for a specific movie, theater, and seat
-
-1. Where should we store the title and runtime of the movie?
-2. Where should we keep track of whether a seat is available or taken?
-3. Who should be responsible for assigning a specific seat when someone buys a ticket?
-4. When we print the ticket, where do we get the info for:
-
-    Movie name
-    Theater number
-    Seat number
-
-5. BONUS The Seat class has a Boolean property named: isTaken. Should other classes just flip that value directly, or should we hide it and give them a method like markAsTaken()? Why or why not?
-
+    Step 3: Suggest Data Structures
+        Based on the relationships you identified, suggest which data structures you would use to model them (e.g., arrays, ArrayList, HashMap, HashSet).
