@@ -11,7 +11,7 @@ public class StockManager {
     }
 
     public boolean addStock(String productName, int quantity) {
-        if (quantity <= 0) { // Bug: Allows non-positive quantities to be added
+        if (quantity <= 0) {
             return false;
         }
         Product product = stock.get(productName);
