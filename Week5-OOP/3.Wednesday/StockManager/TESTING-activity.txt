@@ -2,15 +2,16 @@ StockManager — Business Logic + Unit Testing
 
 Part 1: Map the business logic (no code yet)
 --------------------------------------------
-Imagine a bookstore stock system with Products and a StockManager.
+Imagine a stock system with Products and a StockManager.
+You can use any product names you like in your examples.
 
-1. What should happen when we add stock for a brand-new book?
-2. What should happen when we add stock for a book already in inventory?
+1. What should happen when we add stock for a brand-new product?
+2. What should happen when we add stock for a product already in inventory?
 3. Should we allow adding 0 or negative quantity? Why or why not?
 4. What should happen when we remove stock and there is enough?
-5. What should happen if the book is not in stock?
+5. What should happen if the product is not in stock?
 6. What should happen if we try to remove more than we have?
-7. What should getStock return if the book does not exist?
+7. What should getStock return if the product does not exist?
 
 For each answer, write:
   - Inputs
