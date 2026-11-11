@@ -56,18 +56,5 @@ public class Room {
     //name of the method
     //what goes inside the parenthesis is parameters
     //method signature
-    public void checkIn(){
-        isDirty = true;
-        isOccupied = true;
-    }
 
-    public void checkOut(){
-        isDirty = true;
-        isOccupied = false;
-    }
-
-    public void cleanRoom(){
-        isDirty = false;
-        isOccupied = false;
-    }
 }

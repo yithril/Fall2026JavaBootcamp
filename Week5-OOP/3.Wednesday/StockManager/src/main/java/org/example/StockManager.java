@@ -1,22 +1,22 @@
 package org.example;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 public class StockManager {
-    private Map<String, Product> stock;
+    private ArrayList<Product> stock;
 
     public StockManager() {
-        this.stock = new HashMap<>();
+        this.stock = new ArrayList<>();
     }
 
     public boolean addStock(String productName, int quantity) {
         if (quantity <= 0) {
             return false;
         }
-        Product product = stock.get(productName);
+
+        Product product = findProduct(productName);
         if (product == null) {
-            stock.put(productName, new Product(productName, quantity));
+            stock.add(new Product(productName, quantity));
         } else {
             product.setQuantity(product.getQuantity() + quantity);
         }
@@ -24,7 +24,7 @@ public class StockManager {
     }
 
     public boolean removeStock(String productName, int quantity) {
-        Product product = stock.get(productName);
+        Product product = findProduct(productName);
         if (product == null || product.getQuantity() < quantity) {
             return false;
         }
@@ -33,7 +33,16 @@ public class StockManager {
     }
 
     public int getStock(String productName) {
-        Product product = stock.get(productName);
+        Product product = findProduct(productName);
         return product != null ? product.getQuantity() : -1;
+    }
+
+    private Product findProduct(String productName) {
+        for (Product product : stock) {
+            if (product.getName().equals(productName)) {
+                return product;
+            }
+        }
+        return null;
     }
 }

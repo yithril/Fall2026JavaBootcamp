@@ -1,0 +1,35 @@
+StockManager — Business Logic + Unit Testing
+
+Part 1: Map the business logic (no code yet)
+--------------------------------------------
+Imagine a bookstore stock system with Products and a StockManager.
+
+1. What should happen when we add stock for a brand-new book?
+2. What should happen when we add stock for a book already in inventory?
+3. Should we allow adding 0 or negative quantity? Why or why not?
+4. What should happen when we remove stock and there is enough?
+5. What should happen if the book is not in stock?
+6. What should happen if we try to remove more than we have?
+7. What should getStock return if the book does not exist?
+
+For each answer, write:
+  - Inputs
+  - Expected result (true/false and/or final quantity)
+
+
+Part 2: Write the tests
+-----------------------
+Open StockManagerTest.java. Use your answers from Part 1 as test cases.
+
+Suggested tests:
+1. addStock — new product → returns true, getStock matches quantity
+2. addStock — existing product → quantities add together
+3. addStock — quantity 0 or negative → returns false, not added
+4. removeStock — enough stock → returns true, quantity decreases
+5. removeStock — missing product → returns false
+6. removeStock — not enough stock → returns false, quantity unchanged
+7. getStock — missing product → returns -1
+
+Optional stretch:
+- Remove the exact full quantity (ends at 0)
+- One scenario that mixes several add/remove calls
