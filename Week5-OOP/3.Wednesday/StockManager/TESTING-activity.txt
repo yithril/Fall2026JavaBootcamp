@@ -6,6 +6,8 @@ Imagine a stock system with Products and a StockManager.
 You can use any product names you like in your examples.
 
 1. What should happen when we add stock for a brand-new product?
+If we add Shampoo with a quantity of 10, then the stock should now have shampoo with a quantity of 10.
+
 2. What should happen when we add stock for a product already in inventory?
 3. Should we allow adding 0 or negative quantity? Why or why not?
 4. What should happen when we remove stock and there is enough?

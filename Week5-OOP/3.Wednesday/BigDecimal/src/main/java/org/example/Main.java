@@ -12,6 +12,10 @@ public class Main {
         //add subtract multiply divide
         BigDecimal total = price.add(price2);
 
+        //subtract
+        price.subtract(price2);
+        price.multiply(price2);
+
         //dividing looks ugly
         var result = new BigDecimal("10")
                 .divide(new BigDecimal("3"), 2, RoundingMode.HALF_UP);

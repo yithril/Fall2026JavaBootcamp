@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="3c4a07bc-3777-4680-9217-2962dbfa20da" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../../2.Tuesday/AssetManager/src/main/resources/vehicles.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../2.Tuesday/AssetManager/src/main/resources/vehicles.psv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../2.Tuesday/AssetManager/src/test/java/org/example/VehicleTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Abstraction/src/main/java/org/example/Bird.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Abstraction/src/main/java/org/example/BlueJay.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Abstraction/src/main/java/org/example/Hawk.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Abstraction/src/main/java/org/example/Sparrow.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/ProfessionalWrestlerRoutine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../2.Tuesday/AssetManager/src/main/java/org/example/Vehicle.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../2.Tuesday/AssetManager/src/main/java/org/example/Vehicle.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 8
+}]]></component>
+  <component name="ProjectId" id="3Dg8keJDARCHDGP4Nds6O2liKpq" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Bootcamp/SpringJavaBootcamp2026/Week6-PillarsOfOOP/3.Wednesday/TemplatePattern"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3c4a07bc-3777-4680-9217-2962dbfa20da" name="Changes" comment="" />
+      <created>1778692497175</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1778692497175</updated>
+    </task>
+    <servers />
+  </component>
+</project>
