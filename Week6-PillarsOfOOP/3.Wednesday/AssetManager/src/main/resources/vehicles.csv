@@ -1,0 +1,9 @@
+description,dateAcquired,originalCost,makeModel,year,odometer,expectedValue
+Family Sedan,01-15-2022,30000,Honda Accord,2,45000,28200
+Work Truck,05-10-2018,40000,Ford F150,5,120000,21000
+Luxury SUV,03-01-2015,60000,BMW X5,8,90000,21600
+Old Commuter,07-20-2008,25000,Chevy Malibu,15,180000,750
+Reliable Hatchback,09-12-2019,22000,Toyota Corolla,4,130000,16720
+Sports Car,11-05-2021,50000,Mustang GT,3,25000,45500
+Delivery Van,02-14-2016,35000,Nissan NV200,7,140000,11550
+Compact Car,06-30-2020,18000,Honda Civic,1,105000,17460

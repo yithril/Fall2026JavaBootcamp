@@ -16,13 +16,14 @@ public class PerformanceMain {
         performers.add(juggler);
         performers.add(magician);
 
-        for(Performer person : performers){
-            person.perform();
+        for(Performer performer : performers){
+            performer.perform();
 
-            if(person instanceof Juggler){
-                //downcasting
-                ((Juggler) person).breatheFire();
+            if(performer instanceof Juggler){
+                ((Juggler) performer).breatheFire(); //downcasting
             }
         }
+
+        Performer newPerformer = new Juggler(); //upcasting
     }
 }

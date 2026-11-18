@@ -15,6 +15,10 @@ public class Vehicle {
         this.numberOfPassengers = numberOfPassengers;
     }
 
+    public void goVroom(){
+
+    }
+
     private void checkFuel(){
 
     }

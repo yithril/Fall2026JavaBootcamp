@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategy Pattern: Model Presentation</title>
+<style>
+  :root {
+    --bg: #f4f7fb;
+    --card: #ffffff;
+    --ink: #1f2328;
+    --muted: #5d6470;
+    --line: #dbe4ef;
+    --code-bg: #1e2230;
+    --code-ink: #e6e8ef;
+    --accent: #1d4ed8;
+    --none: #64748b;
+    --ten: #1e3a8a;
+    --five: #1d4ed8;
+    --holiday: #0369a1;
+    --employee: #0891b2;
+    --good: #0369a1;
+    --bad: #d1435b;
+    --mono: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg); color: var(--ink); line-height: 1.55;
+  }
+  header.top { background: #14213d; color: #fff; padding: 40px 24px 32px; }
+  header.top .wrap { max-width: 1000px; margin: 0 auto; }
+  header.top .eyebrow { text-transform: uppercase; letter-spacing: .12em; font-size: 12px; opacity: .7; }
+  header.top h1 { margin: 6px 0 8px; font-size: 38px; }
+  header.top p { margin: 0; max-width: 700px; opacity: .9; }
+  nav { position: sticky; top: 0; z-index: 10; background: rgba(246,245,241,.95); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); }
+  nav .wrap { max-width: 1000px; margin: 0 auto; display: flex; gap: 6px; padding: 10px 24px; flex-wrap: wrap; }
+  nav a { text-decoration: none; color: var(--ink); font-size: 14px; font-weight: 600; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: #fff; }
+  nav a:hover { border-color: var(--accent); color: var(--accent); }
+  main { max-width: 1000px; margin: 0 auto; padding: 24px; }
+  .part-title { margin: 48px 0 8px; font-size: 13px; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); }
+  .part-title:first-child { margin-top: 8px; }
+  section.card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 24px 26px; margin: 16px 0; }
+  .q { display: inline-block; font-size: 12px; font-weight: 700; color: var(--accent); background: #e0eaff; border-radius: 6px; padding: 2px 8px; margin-bottom: 6px; }
+  h2 { margin: 4px 0 10px; font-size: 24px; }
+  h3 { margin: 20px 0 8px; font-size: 17px; }
+  p { margin: 8px 0; }
+  .big-def { font-size: 20px; border-left: 4px solid var(--accent); padding: 6px 0 6px 16px; margin: 12px 0; }
+  code.inline { overflow-wrap: anywhere; font-family: var(--mono); background: #e6edf7; padding: 1px 6px; border-radius: 5px; font-size: .92em; }
+  .hint { font-size: 13px; color: var(--muted); }
+
+
+  /* UML */
+  .uml { display: flex; flex-direction: column; align-items: center; margin: 16px 0 4px; overflow-x: auto; }
+  .uml-row { display: flex; gap: 14px; justify-content: center; align-items: center; flex-wrap: wrap; }
+  .box { border: 2px solid var(--ink); border-radius: 6px; background: #fff; font-family: var(--mono); font-size: 12.5px; }
+  .box .name { font-weight: 700; text-align: center; padding: 6px 10px; border-bottom: 2px solid var(--ink); }
+  .box .name small { display: block; font-weight: 400; font-style: italic; color: var(--muted); }
+  .box .body { padding: 6px 10px; white-space: pre; }
+  .box.iface { border-style: dashed; }
+  .box.iface .name { border-bottom-style: dashed; }
+  .box.small .name { border-bottom: none; }
+  .has-a { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); }
+  .has-a .line { width: 60px; height: 2px; background: var(--ink); position: relative; }
+  .has-a .line::before { content: ""; position: absolute; left: -2px; top: -6px; width: 10px; height: 10px; border: 2px solid var(--ink); background: #fff; transform: rotate(45deg); }
+  .impl { display: flex; flex-direction: column; align-items: center; height: 46px; }
+  .impl .tri { width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 14px solid var(--ink); }
+  .impl .stem { height: 32px; border-left: 2px dashed var(--ink); }
+  .uml-note { text-align: center; font-size: 13px; color: var(--muted); margin-top: 10px; }
+
+  /* Playground */
+  .playground { display: grid; grid-template-columns: 250px 1fr; gap: 22px; margin-top: 14px; }
+  @media (max-width: 780px) { .playground { grid-template-columns: 1fr; } }
+  .col-title { margin: 0 0 8px; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 700; }
+  .scard { border-radius: 10px; color: #fff; margin-bottom: 10px; cursor: grab; user-select: none; overflow: hidden;
+           transition: transform .12s, box-shadow .12s, opacity .12s; box-shadow: 0 2px 0 rgba(0,0,0,.15); display: flex; }
+  .scard:hover { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(0,0,0,.15); }
+  .scard.dragging { opacity: .4; }
+  .scard.in-use { outline: 3px solid var(--ink); outline-offset: 2px; }
+  .scard .plug { width: 26px; background: rgba(255,255,255,.25); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-weight: 700; font-size: 13px; }
+  .scard .inner { padding: 9px 12px; flex: 1; }
+  .scard .cls { font-family: var(--mono); font-weight: 700; font-size: 14px; }
+  .scard .rule { font-size: 12.5px; opacity: .95; }
+  .scard .impl-tag { font-family: var(--mono); font-size: 11px; opacity: .85; margin-top: 2px; }
+  .scard.decoy { background: repeating-linear-gradient(45deg, #9aa0aa, #9aa0aa 8px, #8a909a 8px, #8a909a 16px); }
+  .scard.decoy .plug { background: rgba(0,0,0,.18); }
+  .scard.new-arrival { animation: pop .7s ease; }
+  @keyframes pop { 0% { transform: scale(.6); opacity: 0; } 70% { transform: scale(1.06); } 100% { transform: scale(1); opacity: 1; } }
+
+  .machine { border: 2px solid var(--ink); border-radius: 12px; padding: 16px; background: #f7f9fc; }
+  .machine .title { font-family: var(--mono); font-weight: 700; font-size: 16px; }
+  .machine .field { font-family: var(--mono); font-size: 13px; color: var(--muted); margin: 2px 0 10px; }
+  .socket { display: flex; border: 2px dashed #9aa0aa; border-radius: 10px; min-height: 76px; overflow: hidden; transition: background .15s, border-color .15s; }
+  .socket .plug { width: 26px; border-right: 2px dashed #9aa0aa; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-weight: 700; color: #9aa0aa; font-size: 13px; }
+  .socket .content { flex: 1; display: flex; align-items: center; justify-content: center; text-align: center; padding: 10px; color: var(--muted); font-size: 14px; }
+  .socket.over { background: #e0eaff; border-color: var(--accent); }
+  .socket.filled { border-style: solid; color: #fff; }
+  .socket.filled .plug { border-right: 2px solid rgba(255,255,255,.4); color: #fff; background: rgba(255,255,255,.25); }
+  .socket.filled .content { color: #fff; font-weight: 600; }
+  .socket .cls { font-family: var(--mono); font-size: 16px; }
+  .socket.snap { animation: snap .35s ease; }
+  @keyframes snap { 0% { transform: scale(.96); } 60% { transform: scale(1.03); } 100% { transform: scale(1); } }
+  .socket.reject { animation: shake .45s ease; border-color: var(--bad); background: #fdecef; }
+  @keyframes shake { 0%,100% { transform: translateX(0); } 20% { transform: translateX(-8px); } 40% { transform: translateX(8px); } 60% { transform: translateX(-5px); } 80% { transform: translateX(5px); } }
+  .controls { display: flex; align-items: center; gap: 12px; margin: 14px 0 6px; flex-wrap: wrap; }
+  .controls input[type=range] { flex: 1 1 180px; }
+  .readout { display: flex; gap: 12px; margin-top: 10px; flex-wrap: wrap; }
+  .stat { flex: 1 1 120px; background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+  .stat .label { font-size: 12px; color: var(--muted); font-family: var(--mono); }
+  .stat .value { font-size: 24px; font-weight: 700; }
+
+  .trace { margin-top: 12px; border: 1px solid var(--line); border-radius: 10px; background: #fff; padding: 8px; }
+  .trace .step { display: flex; gap: 10px; align-items: flex-start; padding: 7px 8px; border-radius: 8px; opacity: .3; transition: opacity .25s, background .25s; font-size: 14px; }
+  .trace .step.on { opacity: 1; background: #e0f2fe; }
+  .trace .step.done { opacity: 1; }
+  .trace .num { flex: 0 0 22px; height: 22px; border-radius: 50%; background: var(--ink); color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  .trace code { font-family: var(--mono); font-size: 13px; }
+  .console { margin-top: 12px; background: #0f1320; border-radius: 10px; padding: 10px 12px; font-family: var(--mono); font-size: 12.5px; height: 120px; overflow-y: auto; }
+  .console .cmd { color: #8fb6ff; }
+  .console .out { color: #bae6fd; }
+  .console .err { color: #ff8fa3; }
+  .console .muted { color: #6b7389; }
+
+  /* Code */
+  pre.code { background: var(--code-bg); color: var(--code-ink); border-radius: 10px; padding: 14px 0; margin: 10px 0; font-family: var(--mono); font-size: 13.5px; overflow-x: auto; line-height: 1.6; }
+  pre.code .ln { display: block; padding: 0 16px; white-space: pre; position: relative; transition: background .2s; }
+  pre.code .ln.hl { background: rgba(96,165,250,.16); box-shadow: inset 3px 0 0 #60a5fa; }
+  pre.code .ln.add { background: rgba(56,189,248,.16); box-shadow: inset 3px 0 0 var(--good); }
+  pre.code .ln.check { background: rgba(147,197,253,.22); box-shadow: inset 3px 0 0 #60a5fa; }
+  pre.code .ln.miss { background: rgba(209,67,91,.18); }
+  pre.code .ln.hit { background: rgba(56,189,248,.22); box-shadow: inset 3px 0 0 var(--good); }
+  pre.code .badge { display: inline-block; margin-left: 12px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 11.5px; font-weight: 700; padding: 0 7px; border-radius: 4px; }
+  pre.code .badge.no { background: var(--bad); color: #fff; }
+  pre.code .badge.yes { background: #0284c7; color: #fff; }
+  pre.code .cursor { display: inline-block; width: 8px; background: #93c5fd; animation: blink .7s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .tok-kw { color: #ff8fb1; } .tok-type { color: #7fd4ff; } .tok-str { color: #b5e48c; }
+  .tok-com { color: #8a93a8; font-style: italic; } .tok-num { color: #ffcf70; } .tok-ann { color: #ffd666; }
+
+  .tabs { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 10px; }
+  .tab { border: 1px solid var(--line); background: #fff; border-radius: 8px 8px 0 0; padding: 6px 12px; cursor: pointer; font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
+  .tab.active { background: var(--code-bg); color: #fff; border-color: var(--code-bg); }
+  .tab .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+  .tabs + pre.code { margin-top: 0; border-top-left-radius: 0; }
+  .file-explain { font-size: 14.5px; color: var(--muted); margin: 4px 0 0; }
+
+  .pillars { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; margin-top: 10px; }
+  .pillar { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; background: #f7f9fc; }
+  .pillar.star { border: 2px solid var(--accent); background: #eef4ff; }
+  .pillar b { display: block; margin-bottom: 4px; }
+
+  .runbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 10px 0; }
+  .pick { border: 2px solid var(--line); background: #fff; border-radius: 8px; padding: 6px 12px; font-family: var(--mono); font-size: 13px; cursor: pointer; }
+  .pick.active { border-color: var(--ink); background: var(--ink); color: #fff; }
+  .counter { font-size: 14px; margin-left: auto; }
+  .counter b { font-size: 18px; }
+  .problems { list-style: none; padding: 0; margin: 10px 0 0; }
+  .problems li { padding: 8px 0 8px 30px; position: relative; border-top: 1px solid var(--line); }
+  .problems li::before { content: "!"; position: absolute; left: 0; top: 9px; width: 20px; height: 20px; border-radius: 50%; background: var(--bad); color: #fff; font-weight: 700; font-size: 13px; text-align: center; line-height: 20px; }
+
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 12px; }
+  @media (max-width: 780px) { .compare { grid-template-columns: 1fr; } }
+  .compare .side { border: 1px solid var(--line); border-radius: 12px; padding: 14px; background: #f7f9fc; min-width: 0; }
+  .compare .side h4 { margin: 0 0 6px; }
+  .filelist { list-style: none; padding: 0; margin: 8px 0; font-family: var(--mono); font-size: 13px; }
+  .filelist li { padding: 4px 8px; border-radius: 6px; margin-bottom: 3px; display: flex; justify-content: space-between; gap: 8px; background: #fff; color: var(--muted); transition: background .3s; }
+  .filelist li .tag { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 11.5px; font-weight: 700; }
+  .filelist li.same .tag { color: var(--good); }
+  .filelist li.new { background: #e0f2fe; color: var(--ink); animation: pop .6s ease; }
+  .filelist li.new .tag { color: var(--good); }
+  .filelist li.edited { background: #fde6ea; color: var(--ink); }
+  .filelist li.edited .tag { color: var(--bad); }
+  .score { font-size: 15px; font-weight: 700; margin-top: 8px; min-height: 1.4em; }
+  .score.good { color: var(--good); } .score.bad { color: var(--bad); }
+
+  button.primary { background: var(--accent); color: #fff; border: none; border-radius: 10px; padding: 10px 18px; font-size: 15px; font-weight: 600; cursor: pointer; }
+  button.primary:hover { filter: brightness(1.08); }
+  button.primary:disabled { background: #9aa0aa; cursor: default; }
+  button.ghost { background: #fff; color: var(--ink); border: 1px solid var(--line); border-radius: 10px; padding: 8px 14px; font-size: 14px; cursor: pointer; }
+
+  .toomuch { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 10px; }
+  @media (max-width: 760px) { .toomuch { grid-template-columns: 1fr; } }
+  .toomuch div { border-radius: 10px; padding: 12px 14px; }
+  .toomuch .use { background: #e0f2fe; } .toomuch .skip { background: #eef2f7; }
+  .toomuch ul { margin: 6px 0 0; padding-left: 20px; }
+
+  .choices { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+  @media (max-width: 600px) { .choices { grid-template-columns: 1fr; } }
+  .choice { text-align: left; border: 2px solid var(--line); background: #fff; border-radius: 10px; padding: 12px 14px; cursor: pointer; font-family: var(--mono); font-size: 14px; white-space: pre-line; }
+  .choice:hover { border-color: var(--accent); }
+  .choice.right { border-color: var(--good); background: #e0f2fe; }
+  .choice.wrong { border-color: var(--bad); background: #fdecef; }
+  .feedback { margin-top: 12px; padding: 12px 14px; border-radius: 10px; background: #eef3fa; display: none; }
+  .feedback.show { display: block; }
+  .concrete-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 12px; }
+  @media (max-width: 780px) { .concrete-grid { grid-template-columns: 1fr; } }
+  .ccard { border-radius: 12px; overflow: hidden; border: 1px solid var(--line); background: #fff; min-width: 0; }
+  .ccard .head { color: #fff; padding: 8px 14px; font-family: var(--mono); font-weight: 700; display: flex; justify-content: space-between; }
+  .ccard .head span { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-weight: 500; font-size: 13px; opacity: .9; }
+  .ccard pre.code { margin: 0; border-radius: 0; font-size: 12.5px; }
+  .ccard .result { padding: 8px 14px; font-family: var(--mono); font-size: 13px; }
+  .ccard .result b { font-size: 16px; }
+  .callout { margin-top: 14px; background: #e0eaff; border-left: 4px solid var(--accent); border-radius: 8px; padding: 12px 14px; }
+  table.effort { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 14.5px; }
+  table.effort th, table.effort td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  table.effort th { font-size: 13px; color: var(--muted); }
+  table.effort td.bad { color: var(--bad); font-weight: 600; }
+  table.effort td.good { color: var(--good); font-weight: 600; }
+  .console.short { height: auto; min-height: 60px; }
+  .verdict { font-size: 14.5px; font-weight: 600; margin: 10px 0 0; }
+  .verdict.bad { color: var(--bad); } .verdict.good { color: var(--good); }
+  footer { text-align: center; color: var(--muted); font-size: 13px; padding: 30px 24px 50px; }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="eyebrow">Model presentation &middot; Design Patterns</div>
+    <h1>The Strategy Pattern</h1>
+    <p>This is an example of what your presentation could look like. Each section answers one of the questions from the assignment, marked Q1 through Q10.</p>
+  </div>
+</header>
+
+<nav>
+  <div class="wrap">
+    <a href="#part1">Part 1: Teach the pattern</a>
+    <a href="#try">Try it</a>
+    <a href="#part2">Part 2: Why it helps</a>
+    <a href="#part3">Part 3: Check the class</a>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ================= PART 1 ================= -->
+  <div class="part-title" id="part1">Part 1: Teach the pattern</div>
+
+  <section class="card">
+    <span class="q">Q1</span>
+    <h2>What is the Strategy pattern?</h2>
+    <p class="big-def">Strategy puts each way of doing a job in its own class. Because every one of those classes shares the same interface, you can swap one for another, even while the program is running.</p>
+    <p>The class that uses the strategy never asks "which one are you?" It just calls the interface method, and polymorphism makes sure the right version runs.</p>
+  </section>
+
+  <section class="card">
+    <span class="q">Q2 &middot; Q3</span>
+    <h2>The problem: store discounts</h2>
+    <p>A store checkout needs to apply discounts. There are several kinds, and the store keeps adding more:</p>
+    <ul>
+      <li><b>No discount:</b> pay the full price</li>
+      <li><b>10% off:</b> take 10% off the subtotal</li>
+      <li><b>$5 off:</b> take $5 off (never below $0)</li>
+      <li><b>Holiday sale:</b> take 25% off</li>
+    </ul>
+    <p>Notice that every discount does the same <i>job</i> (turn a subtotal into a total), but each one follows a different <i>rule</i> to do it.</p>
+  </section>
+
+  <section class="card" id="concrete">
+    <span class="q">Q3</span>
+    <h2>Step 1: give each rule its own class</h2>
+    <p>Each way of discounting gets its own class. Each class keeps its rule inside its own <code class="inline">applyDiscount</code> method, and no class knows about the others. These classes are called the <b>concrete strategies</b>.</p>
+    <div class="controls">
+      <label for="cSub"><b>Try a subtotal:</b> $<span id="cSubLabel">50</span></label>
+      <input type="range" id="cSub" min="10" max="200" step="5" value="50">
+    </div>
+    <div class="concrete-grid" id="concreteGrid"></div>
+    <p class="hint">The highlighted line is the only real difference between these classes. Everything around it is the same shape.</p>
+    <div class="callout"><b>Same method, different rule.</b> All four classes have an <code class="inline">applyDiscount(BigDecimal subtotal)</code> method, and each one hides its own math inside it. Because they all share that shape, we can describe it once in an interface. Think of the interface as a <b>plug</b>: every discount is built with the same plug, so the checkout can take any of them.</div>
+  </section>
+
+  <section class="card">
+    <span class="q">Q4</span>
+    <h2>What are the pieces?</h2>
+    <ul>
+      <li><b>The interface</b> (<code class="inline">DiscountStrategy</code>): the "plug shape" every discount must have.</li>
+      <li><b>The strategies</b> (<code class="inline">TenPercentOff</code>, etc.): each one is a different way to discount.</li>
+      <li><b>The context</b> (<code class="inline">Checkout</code>): the class that holds a strategy and uses it.</li>
+    </ul>
+    <div class="uml">
+      <div class="uml-row">
+        <div class="box">
+          <div class="name">Checkout<small>context</small></div>
+          <div class="body">- strategy: DiscountStrategy = NoDiscount
+
++ setStrategy(s)
++ total(subtotal): BigDecimal
++ label(): String</div>
+        </div>
+        <div class="has-a"><div class="line"></div>has a</div>
+        <div class="box iface">
+          <div class="name">DiscountStrategy<small>&laquo;interface&raquo;</small></div>
+          <div class="body">+ applyDiscount(subtotal): BigDecimal
++ getName(): String</div>
+        </div>
+      </div>
+      <div class="uml-row" style="margin-left: 250px;"><div class="impl"><div class="tri"></div><div class="stem"></div></div></div>
+      <div class="uml-row">
+        <div class="box small"><div class="name">NoDiscount</div></div>
+        <div class="box small"><div class="name">TenPercentOff</div></div>
+        <div class="box small"><div class="name">FiveDollarsOff</div></div>
+        <div class="box small"><div class="name">HolidaySale</div></div>
+      </div>
+      <div class="uml-note">Dashed box = interface. Dashed arrow = "implements." Diamond line = "has a."</div>
+    </div>
+  </section>
+
+  <section class="card" id="try">
+    <span class="q">Q5</span>
+    <h2>Try it: swap the strategy</h2>
+    <p>A new <code class="inline">Checkout</code> starts with <code class="inline">NoDiscount</code> plugged in. Drag a different discount in to swap it, or click a card. Every card with the <b>D</b> plug implements <code class="inline">DiscountStrategy</code>, so it fits. Try the gray <code class="inline">Coupon</code> card too.</p>
+
+    <div class="playground">
+      <div>
+        <div class="col-title">Classes</div>
+        <div id="palette"></div>
+      </div>
+
+      <div>
+        <div class="col-title">Context</div>
+        <div class="machine">
+          <div class="title">Checkout</div>
+          <div class="field">private DiscountStrategy strategy = new NoDiscount();</div>
+          <div class="socket" id="socket"><div class="plug">D</div><div class="content">Accepts any DiscountStrategy. Drop one here.</div></div>
+
+          <div class="controls">
+            <label for="subtotal"><b>Cart subtotal:</b> $<span id="subLabel">50</span></label>
+            <input type="range" id="subtotal" min="10" max="200" step="5" value="50">
+          </div>
+
+          <div class="readout">
+            <div class="stat"><div class="label">checkout.total(subtotal)</div><div class="value" id="total">-</div></div>
+            <div class="stat"><div class="label">checkout.label()</div><div class="value" id="label" style="font-size:18px">-</div></div>
+          </div>
+
+          <div class="trace" id="trace">
+            <div class="step" data-i="0"><div class="num">1</div><div id="t0">Checkout calls <code>strategy.applyDiscount(subtotal)</code>. It only knows the variable's type: <code>DiscountStrategy</code>.</div></div>
+            <div class="step" data-i="1"><div class="num">2</div><div id="t1">Java looks at the real object inside <code>strategy</code>.</div></div>
+            <div class="step" data-i="2"><div class="num">3</div><div id="t2">That class's version of <code>applyDiscount</code> runs. This is polymorphism.</div></div>
+          </div>
+
+          <div class="console" id="console"><div class="muted">// Java calls will show up here</div></div>
+        </div>
+      </div>
+    </div>
+
+    <h3>The class that is plugged in right now</h3>
+    <p class="hint" id="pluggedHint">Plug in a discount to see its code.</p>
+    <pre class="code" id="pluggedCode"></pre>
+  </section>
+
+  <section class="card">
+    <span class="q">Q5</span>
+    <h2>Walk through the code</h2>
+    <p>Click through each file. Every class lives in its own file, just like in your IDE.</p>
+    <div class="tabs" id="fileTabs"></div>
+    <pre class="code" id="fileCode"></pre>
+    <p class="file-explain" id="fileExplain"></p>
+  </section>
+
+  <section class="card">
+    <span class="q">Q6</span>
+    <h2>Where are the OOP pillars?</h2>
+    <p>Two of them do most of the work: the shared interface lets every discount fit, and polymorphism makes the right one run.</p>
+    <div class="pillars">
+      <div class="pillar star"><b>Abstraction (the interface)</b><code class="inline">DiscountStrategy</code> says <i>what</i> every discount can do and hides <i>how</i>. Checkout only ever talks to the interface.</div>
+      <div class="pillar star"><b>Polymorphism</b>The same line, <code class="inline">strategy.applyDiscount(subtotal)</code>, runs different code depending on which object is plugged in.</div>
+      <div class="pillar"><b>Encapsulation</b>Each class keeps its own rule. <code class="inline">TenPercentOff</code> knows nothing about holiday sales.</div>
+      <div class="pillar"><b>Implementing an interface</b>Every discount says <code class="inline">implements DiscountStrategy</code>. Leave that off and it won't fit, just like the Coupon card.</div>
+    </div>
+  </section>
+
+  <!-- ================= PART 2 ================= -->
+  <div class="part-title" id="part2">Part 2: Why it helps</div>
+
+  <section class="card">
+    <span class="q">Q7</span>
+    <h2>What would this look like without the pattern?</h2>
+    <p>Here is a version that does the same thing with no interface and no strategy classes. One class checks a String with if/else. Pick a discount and press <b>Run</b> to watch Java work through it.</p>
+    <div class="runbar">
+      <span class="pick active" data-type="none">"none"</span>
+      <span class="pick" data-type="ten">"ten"</span>
+      <span class="pick" data-type="five">"five"</span>
+      <span class="pick" data-type="holiday">"holiday"</span>
+      <button class="primary" id="runBtn">Run total() and label()</button>
+      <span class="counter">if checks made: <b id="checks">0</b></span>
+    </div>
+    <pre class="code" id="noPatternCode"></pre>
+    <h3>What makes this harder to work with</h3>
+    <ul class="problems">
+      <li><b>Java has to check every condition in order</b> until one matches. And the same checks happen again in <code class="inline">label()</code>.</li>
+      <li><b>Every new discount means editing this class in two places.</b> Miss one and the program breaks at runtime.</li>
+      <li><b>Typos compile.</b> <code class="inline">total("holday", subtotal)</code> compiles fine and crashes only when the program runs.</li>
+      <li><b>The class keeps growing.</b> Ten discounts means two if/else chains with ten branches each.</li>
+    </ul>
+    <div class="callout"><b>"That looks fine to me."</b> With four discounts, it kind of does. The if/else version works. The real cost shows up when the code has to <i>change</i>, and in a real store, it changes all the time. Let's add a discount and see.</div>
+  </section>
+
+  <section class="card">
+    <span class="q">Q8</span>
+    <h2>Add something new: an employee discount</h2>
+    <p>The store wants a new discount: <b>Employee, 30% off</b>. Watch what has to change in each version.</p>
+    <p><button class="primary" id="addBtn">Add the employee discount to both versions</button> <button class="ghost" id="resetBtn" style="display:none">Reset</button></p>
+    <div class="compare">
+      <div class="side">
+        <h4>With Strategy</h4>
+        <ul class="filelist" id="withFiles"></ul>
+        <div class="score" id="withScore"></div>
+        <pre class="code" id="withNew" style="display:none"></pre>
+      </div>
+      <div class="side">
+        <h4>Without Strategy</h4>
+        <ul class="filelist" id="withoutFiles"></ul>
+        <div class="score" id="withoutScore"></div>
+        <pre class="code" id="withoutNew" style="display:none"></pre>
+      </div>
+    </div>
+    <p class="hint" id="addHint" style="display:none">Scroll back up to <a href="#try">Try it</a>. The new EmployeeDiscount card is ready to drag in, and Checkout didn't change at all.</p>
+
+    <h3>What did that change actually cost?</h3>
+    <table class="effort">
+      <thead><tr><th></th><th>Without Strategy</th><th>With Strategy</th></tr></thead>
+      <tbody>
+        <tr><td>Working files you had to open and edit</td><td class="bad">1 (Checkout.java)</td><td class="good">0</td></tr>
+        <tr><td>Places you had to remember to change</td><td class="bad">2 (total and label)</td><td class="good">0. The interface tells you what to write.</td></tr>
+        <tr><td>Discounts you should retest</td><td class="bad">All 5, because the class they share changed</td><td class="good">Only the new one</td></tr>
+        <tr><td>If you forget something</td><td class="bad">It compiles, then crashes while running</td><td class="good">It won't compile until you fix it</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="card" id="bugs">
+    <span class="q">Q8</span>
+    <h2>What could go wrong?</h2>
+    <p>Every time you edit code that already works, you might break it. Here are three mistakes that are easy to make on a busy day. Pick one to see what happens in each version.</p>
+    <div class="runbar" id="bugPicks"></div>
+    <div class="compare">
+      <div class="side">
+        <h4>Without Strategy</h4>
+        <pre class="code" id="bugWithoutCode"></pre>
+        <div class="console short" id="bugWithoutConsole"></div>
+        <p class="verdict bad" id="bugWithoutNote"></p>
+      </div>
+      <div class="side">
+        <h4>With Strategy</h4>
+        <pre class="code" id="bugWithCode"></pre>
+        <div class="console short" id="bugWithConsole"></div>
+        <p class="verdict good" id="bugWithNote"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <span class="q">Q9</span>
+    <h2>When is Strategy too much?</h2>
+    <div class="toomuch">
+      <div class="use"><b>Good fit</b>
+        <ul>
+          <li>You have several ways to do the same job.</li>
+          <li>New ways get added over time.</li>
+          <li>You need to switch while the program is running.</li>
+        </ul>
+      </div>
+      <div class="skip"><b>Probably overkill</b>
+        <ul>
+          <li>There is only one way to do the job.</li>
+          <li>There are two options and that will never change.</li>
+          <li>Each option is one short line. A simple if/else is easier to read.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PART 3 ================= -->
+  <div class="part-title" id="part3">Part 3: Check the class</div>
+
+  <section class="card">
+    <span class="q">Q10</span>
+    <h2>Predict the output</h2>
+    <p>What does this code print? Pick an answer before you check.</p>
+    <pre class="code" id="predictCode"></pre>
+    <div class="choices" id="choices"></div>
+    <div class="feedback" id="feedback"></div>
+  </section>
+</main>
+
+<footer>Strategy Pattern model presentation. Use it as a guide for the structure of your own.</footer>
+
+<script>
+/* ================= Java syntax highlighter ================= */
+function esc(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+var KW = "import|public|private|class|interface|implements|return|new|if|else|throw|void|static|this";
+var TY = "BigDecimal|RoundingMode|double|int|String|DiscountStrategy|NoDiscount|TenPercentOff|FiveDollarsOff|HolidaySale|EmployeeDiscount|Checkout|Coupon|IllegalArgumentException|System|Math|Main";
+var RE = new RegExp('(\\/\\/.*$)|("(?:[^"\\\\]|\\\\.)*")|(@\\w+)|\\b(' + KW + ')\\b|\\b(' + TY + ')\\b|\\b(\\d+(?:\\.\\d+)?)\\b', "g");
+function hl(line) {
+  var out = "", last = 0, m;
+  RE.lastIndex = 0;
+  while ((m = RE.exec(line)) !== null) {
+    out += esc(line.slice(last, m.index));
+    var t = esc(m[0]);
+    var c = m[1] ? "com" : m[2] ? "str" : m[3] ? "ann" : m[4] ? "kw" : m[5] ? "type" : "num";
+    out += '<span class="tok-' + c + '">' + t + "</span>";
+    last = m.index + m[0].length;
+  }
+  return out + esc(line.slice(last));
+}
+/* lines: array of strings or {text, cls} */
+function render(el, lines) {
+  el.innerHTML = lines.map(function (l) {
+    var text = typeof l === "string" ? l : l.text;
+    var cls = typeof l === "string" ? "" : (l.cls || "");
+    return '<span class="ln ' + cls + '">' + (hl(text) || " ") + "</span>";
+  }).join("");
+}
+function withHighlight(src, match) {
+  return src.split("\n").map(function (t) { return { text: t, cls: match && t.indexOf(match) !== -1 ? "hl" : "" }; });
+}
+function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+function money(n) { return "$" + n.toFixed(2); }
+
+/* ================= Strategies ================= */
+function strategySource(s) {
+  var imports = ["import java.math.BigDecimal;"];
+  if (s.body.indexOf("RoundingMode") !== -1) imports.push("import java.math.RoundingMode;");
+  return imports.concat([""]).concat([
+    "// " + s.comment,
+    "public class " + s.cls + " implements DiscountStrategy {",
+    "",
+    "    @Override",
+    "    public BigDecimal applyDiscount(BigDecimal subtotal) {",
+    "        " + s.body,
+    "    }",
+    "",
+    "    @Override",
+    "    public String getName() {",
+    '        return "' + s.label + '";',
+    "    }",
+    "}"
+  ]).join("\n");
+}
+var S = {
+  none:     { cls: "NoDiscount", label: "No discount", color: "var(--none)", body: "return subtotal;",
+              comment: "Strategy: pay full price.", rule: "full price", fn: function (x) { return x; } },
+  ten:      { cls: "TenPercentOff", label: "10% off", color: "var(--ten)", body: "return subtotal.multiply(BigDecimal.valueOf(0.90)).setScale(2, RoundingMode.HALF_UP);",
+              comment: "Strategy: 10% off everything.", rule: "10% off", fn: function (x) { return x * 0.90; } },
+  five:     { cls: "FiveDollarsOff", label: "$5 off", color: "var(--five)", body: "return subtotal.subtract(BigDecimal.valueOf(5)).max(BigDecimal.ZERO);",
+              comment: "Strategy: $5 off, never below zero.", rule: "$5 off", fn: function (x) { return Math.max(0, x - 5); } },
+  holiday:  { cls: "HolidaySale", label: "Holiday sale (25% off)", color: "var(--holiday)", body: "return subtotal.multiply(BigDecimal.valueOf(0.75)).setScale(2, RoundingMode.HALF_UP);",
+              comment: "Strategy: 25% off for the holidays.", rule: "25% off", fn: function (x) { return x * 0.75; } },
+  employee: { cls: "EmployeeDiscount", label: "Employee (30% off)", color: "var(--employee)", body: "return subtotal.multiply(BigDecimal.valueOf(0.70)).setScale(2, RoundingMode.HALF_UP);",
+              comment: "New strategy: added without touching any existing class.", rule: "30% off", fn: function (x) { return x * 0.70; } }
+};
+Object.keys(S).forEach(function (k) { S[k].src = strategySource(S[k]); });
+var COUPON_SRC = [
+  "import java.math.BigDecimal;",
+  "",
+  "// This class does NOT implement DiscountStrategy.",
+  "public class Coupon {",
+  "",
+  "    public BigDecimal takeOff(BigDecimal subtotal) {",
+  "        return subtotal.subtract(BigDecimal.valueOf(3));",
+  "    }",
+  "}"
+].join("\n");
+
+/* ================= Concrete strategies grid ================= */
+var cSub = document.getElementById("cSub");
+var cGrid = document.getElementById("concreteGrid");
+["none", "ten", "five", "holiday"].forEach(function (k) {
+  var s = S[k];
+  var card = document.createElement("div");
+  card.className = "ccard";
+  card.innerHTML = '<div class="head" style="background:' + s.color + '">' + s.cls + "<span>" + s.label + '</span></div><pre class="code"></pre><div class="result" id="cres-' + k + '"></div>';
+  cGrid.appendChild(card);
+  render(card.querySelector("pre"), [
+    { text: "public class " + s.cls + " {" },
+    { text: "" },
+    { text: "    public BigDecimal applyDiscount(BigDecimal subtotal) {" },
+    { text: "        " + s.body, cls: "hl" },
+    { text: "    }" },
+    { text: "}" }
+  ]);
+});
+function updateConcrete() {
+  var v = Number(cSub.value);
+  document.getElementById("cSubLabel").textContent = v;
+  ["none", "ten", "five", "holiday"].forEach(function (k) {
+    document.getElementById("cres-" + k).innerHTML = "applyDiscount(" + v.toFixed(2) + ") &rarr; <b>" + money(S[k].fn(v)) + "</b>";
+  });
+}
+cSub.addEventListener("input", updateConcrete);
+updateConcrete();
+
+var available = ["none", "ten", "five", "holiday"];
+var current = null;
+var traceRun = 0;
+
+/* ================= Palette + drag and drop ================= */
+var paletteEl = document.getElementById("palette");
+var socket = document.getElementById("socket");
+var socketContent = socket.querySelector(".content");
+
+function makeCard(key, isNew) {
+  var card = document.createElement("div");
+  if (key === "coupon") {
+    card.className = "scard decoy";
+    card.innerHTML = '<div class="plug">?</div><div class="inner"><div class="cls">Coupon</div><div class="rule">$3 off</div><div class="impl-tag">no interface</div></div>';
+  } else {
+    var s = S[key];
+    card.className = "scard" + (key === current ? " in-use" : "") + (isNew ? " new-arrival" : "");
+    card.style.background = s.color;
+    card.innerHTML = '<div class="plug">D</div><div class="inner"><div class="cls">' + s.cls + '</div><div class="rule">' + s.rule + '</div><div class="impl-tag">implements DiscountStrategy</div></div>';
+  }
+  card.draggable = true;
+  card.addEventListener("dragstart", function (e) { e.dataTransfer.setData("text/plain", key); card.classList.add("dragging"); });
+  card.addEventListener("dragend", function () { card.classList.remove("dragging"); });
+  card.addEventListener("click", function () { tryPlug(key); });
+  return card;
+}
+function renderPalette(newKey) {
+  paletteEl.innerHTML = "";
+  available.forEach(function (k) { paletteEl.appendChild(makeCard(k, k === newKey)); });
+  paletteEl.appendChild(makeCard("coupon"));
+}
+socket.addEventListener("dragover", function (e) { e.preventDefault(); socket.classList.add("over"); });
+socket.addEventListener("dragleave", function () { socket.classList.remove("over"); });
+socket.addEventListener("drop", function (e) {
+  e.preventDefault(); socket.classList.remove("over");
+  tryPlug(e.dataTransfer.getData("text/plain"));
+});
+
+/* ================= Console ================= */
+var consoleEl = document.getElementById("console");
+function log(text, cls) {
+  var m = consoleEl.querySelector(".muted"); if (m) m.remove();
+  var d = document.createElement("div"); d.className = cls || "cmd"; d.textContent = text;
+  consoleEl.appendChild(d); consoleEl.scrollTop = consoleEl.scrollHeight;
+}
+
+/* ================= Plug in ================= */
+function tryPlug(key) {
+  if (key === "coupon") {
+    log("checkout.setStrategy(new Coupon());");
+    log("error: incompatible types: Coupon cannot be converted to DiscountStrategy", "err");
+    socket.classList.remove("reject"); void socket.offsetWidth; socket.classList.add("reject");
+    setTimeout(function () { socket.classList.remove("reject"); }, 600);
+    render(document.getElementById("pluggedCode"), withHighlight(COUPON_SRC, "public class Coupon"));
+    document.getElementById("pluggedHint").textContent = "Coupon.java will not fit. It has no \"implements DiscountStrategy\", so Java refuses to compile it. Checkout only accepts the interface.";
+    return;
+  }
+  if (!S[key]) return;
+  var s = S[key];
+  var changed = current !== key;
+  current = key;
+  socket.classList.add("filled");
+  socket.style.background = s.color; socket.style.borderColor = s.color;
+  socketContent.innerHTML = '<div><div class="cls">' + s.cls + '</div><div style="font-size:13px;font-weight:400">fits because it implements DiscountStrategy</div></div>';
+  socket.classList.remove("snap"); void socket.offsetWidth; socket.classList.add("snap");
+  renderPalette();
+  if (changed) log("checkout.setStrategy(new " + s.cls + "());");
+  render(document.getElementById("pluggedCode"), withHighlight(s.src, s.body));
+  document.getElementById("pluggedHint").textContent = s.cls + ".java. The highlighted line is the one that runs when Checkout calls applyDiscount.";
+  calc(true);
+}
+
+var subEl = document.getElementById("subtotal");
+function calc(animate) {
+  var sub = Number(subEl.value);
+  document.getElementById("subLabel").textContent = sub;
+  if (!current) return;
+  var s = S[current];
+  var result = s.fn(sub);
+  document.getElementById("total").textContent = money(result);
+  document.getElementById("label").textContent = s.label;
+  if (animate) {
+    log("checkout.total(new BigDecimal(\"" + sub.toFixed(2) + "\"))");
+    log("  => " + money(result), "out");
+    playTrace(s, sub, result);
+  }
+}
+async function playTrace(s, sub, result) {
+  var run = ++traceRun;
+  var steps = document.querySelectorAll("#trace .step");
+  document.getElementById("t1").innerHTML = "Java looks at the real object inside <code>strategy</code>. It is a <code>" + s.cls + "</code>.";
+  document.getElementById("t2").innerHTML = "<code>" + s.cls + ".applyDiscount(" + sub.toFixed(2) + ")</code> runs and returns <b>" + money(result) + "</b>. Same call, different class. That is polymorphism.";
+  steps.forEach(function (st) { st.classList.remove("on", "done"); });
+  for (var i = 0; i < steps.length; i++) {
+    if (run !== traceRun) return;
+    steps[i].classList.add("on");
+    await sleep(650);
+    if (run !== traceRun) return;
+    steps[i].classList.remove("on"); steps[i].classList.add("done");
+  }
+}
+var subTimer = null;
+subEl.addEventListener("input", function () {
+  calc(false);
+  clearTimeout(subTimer);
+  subTimer = setTimeout(function () { if (current) calc(true); }, 350);
+});
+
+/* ================= File walkthrough ================= */
+var CHECKOUT_SRC = [
+  "import java.math.BigDecimal;",
+  "",
+  "// The context: it HAS a strategy, but never asks which one.",
+  "public class Checkout {",
+  "",
+  "    // Every checkout starts with no discount.",
+  "    private DiscountStrategy strategy = new NoDiscount();",
+  "",
+  "    public void setStrategy(DiscountStrategy strategy) {",
+  "        this.strategy = strategy;",
+  "    }",
+  "",
+  "    public BigDecimal total(BigDecimal subtotal) {",
+  "        return strategy.applyDiscount(subtotal);",
+  "    }",
+  "",
+  "    public String label() {",
+  "        return strategy.getName();",
+  "    }",
+  "}"
+].join("\n");
+var FILES = [
+  { name: "DiscountStrategy.java", dot: "#9aa0aa", match: "BigDecimal applyDiscount",
+    explain: "The interface. It is the \"plug shape.\" Any class that implements it can be plugged into Checkout.",
+    src: [
+      "import java.math.BigDecimal;",
+  "",
+  "// The interface: every discount must be able to do these things.",
+      "public interface DiscountStrategy {",
+      "",
+      "    BigDecimal applyDiscount(BigDecimal subtotal);",
+      "",
+      "    String getName();",
+      "}"
+    ].join("\n") },
+  { name: "NoDiscount.java", key: "none", explain: "A strategy. It implements the interface and fills in its own rule." },
+  { name: "TenPercentOff.java", key: "ten", explain: "Same two methods, different math." },
+  { name: "FiveDollarsOff.java", key: "five", explain: "Another strategy. None of these classes know about each other." },
+  { name: "HolidaySale.java", key: "holiday", explain: "Another strategy. Adding it didn't change any other file." },
+  { name: "Checkout.java", dot: "#14213d", src: CHECKOUT_SRC, match: "strategy.",
+    explain: "The context. Its field's type is the interface, so it can hold any discount. It never uses if/else to figure out which one it has." },
+  { name: "Main.java", dot: "#14213d", match: "setStrategy",
+    explain: "Main creates a Checkout, which starts with NoDiscount. When a discount applies, setStrategy swaps it in.",
+    src: [
+      "import java.math.BigDecimal;",
+  "",
+  "public class Main {",
+      "    public static void main(String[] args) {",
+      "        Checkout checkout = new Checkout();   // starts with NoDiscount",
+      "        System.out.println(checkout.total(new BigDecimal(\"50.00\")));",
+      "",
+      "        checkout.setStrategy(new TenPercentOff());",
+      "        System.out.println(checkout.total(new BigDecimal(\"50.00\")));",
+      "    }",
+      "}",
+      "",
+      "// Output:",
+      "// 50.00",
+      "// 45.00"
+    ].join("\n") }
+];
+FILES.forEach(function (f) { if (f.key) { f.src = S[f.key].src; f.match = S[f.key].body; f.dot = S[f.key].color; } });
+var tabsEl = document.getElementById("fileTabs");
+function showFile(i) {
+  var f = FILES[i];
+  Array.prototype.forEach.call(tabsEl.children, function (t, j) { t.classList.toggle("active", i === j); });
+  render(document.getElementById("fileCode"), withHighlight(f.src, f.match));
+  document.getElementById("fileExplain").textContent = f.explain;
+}
+FILES.forEach(function (f, i) {
+  var t = document.createElement("button");
+  t.className = "tab";
+  t.innerHTML = '<span class="dot" style="background:' + f.dot + '"></span>' + f.name;
+  t.addEventListener("click", function () { showFile(i); });
+  tabsEl.appendChild(t);
+});
+showFile(0);
+
+/* ================= Without the pattern: animated if/else ================= */
+/* Each line: { text, method, cond, ret } */
+function buildNoPattern(withEmployee) {
+  var types = [
+    ["none", "return subtotal;", '"No discount"'],
+    ["ten", "return subtotal.multiply(BigDecimal.valueOf(0.90)).setScale(2, RoundingMode.HALF_UP);", '"10% off"'],
+    ["five", "return subtotal.subtract(BigDecimal.valueOf(5)).max(BigDecimal.ZERO);", '"$5 off"'],
+    ["holiday", "return subtotal.multiply(BigDecimal.valueOf(0.75)).setScale(2, RoundingMode.HALF_UP);", '"Holiday sale (25% off)"']
+  ];
+  if (withEmployee) types.push(["employee", "return subtotal.multiply(BigDecimal.valueOf(0.70)).setScale(2, RoundingMode.HALF_UP);", '"Employee (30% off)"']);
+  var L = [];
+  L.push({ text: "// No pattern: one class decides everything with if/else." });
+  L.push({ text: "public class Checkout {" });
+  L.push({ text: "" });
+  function method(sig, name, idx) {
+    L.push({ text: "    " + sig + " {" });
+    types.forEach(function (t, i) {
+      var isNew = t[0] === "employee";
+      L.push({ text: "        " + (i === 0 ? "if" : "} else if") + ' (type.equals("' + t[0] + '")) {', method: name, cond: t[0], isNew: isNew });
+      L.push({ text: "            " + (idx === 1 ? t[1] : "return " + t[2] + ";"), method: name, ret: t[0], isNew: isNew });
+    });
+    L.push({ text: "        } else {" });
+    L.push({ text: '            throw new IllegalArgumentException("Unknown: " + type);' });
+    L.push({ text: "        }" });
+    L.push({ text: "    }" });
+  }
+  method("public BigDecimal total(String type, BigDecimal subtotal)", "total", 1);
+  L.push({ text: "" });
+  method("public String label(String type)", "label", 2);
+  L.push({ text: "}" });
+  return L;
+}
+var npEl = document.getElementById("noPatternCode");
+var NP = buildNoPattern(false);
+function renderNP(lines) { render(npEl, lines.map(function (l) { return { text: l.text }; })); }
+renderNP(NP);
+
+var pickType = "none";
+document.querySelectorAll(".pick").forEach(function (p) {
+  p.addEventListener("click", function () {
+    document.querySelectorAll(".pick").forEach(function (x) { x.classList.remove("active"); });
+    p.classList.add("active"); pickType = p.dataset.type;
+  });
+});
+var running = false;
+document.getElementById("runBtn").addEventListener("click", async function () {
+  if (running) return;
+  running = true; this.disabled = true;
+  renderNP(NP);
+  var spans = npEl.querySelectorAll(".ln");
+  var checks = 0; var checksEl = document.getElementById("checks"); checksEl.textContent = "0";
+  var methods = ["total", "label"];
+  for (var mi = 0; mi < methods.length; mi++) {
+    for (var i = 0; i < NP.length; i++) {
+      var l = NP[i];
+      if (l.method !== methods[mi] || !l.cond) continue;
+      spans[i].classList.add("check");
+      checks++; checksEl.textContent = checks;
+      await sleep(550);
+      spans[i].classList.remove("check");
+      if (l.cond === pickType) {
+        spans[i].classList.add("hit");
+        spans[i].insertAdjacentHTML("beforeend", '<span class="badge yes">match</span>');
+        await sleep(300);
+        spans[i + 1].classList.add("hit");
+        await sleep(500);
+        break;
+      } else {
+        spans[i].classList.add("miss");
+        spans[i].insertAdjacentHTML("beforeend", '<span class="badge no">no</span>');
+      }
+    }
+  }
+  running = false; this.disabled = false;
+});
+
+/* ================= Add employee discount ================= */
+var WITH_FILES = ["DiscountStrategy.java", "NoDiscount.java", "TenPercentOff.java", "FiveDollarsOff.java", "HolidaySale.java", "Checkout.java"];
+var withFilesEl = document.getElementById("withFiles");
+var withoutFilesEl = document.getElementById("withoutFiles");
+function resetCompare() {
+  withFilesEl.innerHTML = WITH_FILES.map(function (f) { return '<li><span>' + f + '</span><span class="tag"></span></li>'; }).join("");
+  withoutFilesEl.innerHTML = '<li><span>Checkout.java</span><span class="tag"></span></li>';
+  document.getElementById("withScore").textContent = "";
+  document.getElementById("withoutScore").textContent = "";
+  document.getElementById("withNew").style.display = "none";
+  document.getElementById("withoutNew").style.display = "none";
+}
+resetCompare();
+
+async function typeInto(span, text, cls) {
+  span.className = "ln " + (cls || "");
+  for (var i = 1; i <= text.length; i++) {
+    span.innerHTML = hl(text.slice(0, i)) + '<span class="cursor">&nbsp;</span>';
+    await sleep(14);
+  }
+  span.innerHTML = hl(text) || " ";
+}
+
+document.getElementById("addBtn").addEventListener("click", async function () {
+  this.disabled = true;
+  var withNew = document.getElementById("withNew");
+  var withoutNew = document.getElementById("withoutNew");
+
+  /* --- With Strategy: existing files flash "unchanged", new file is typed --- */
+  var lis = withFilesEl.querySelectorAll("li");
+  for (var i = 0; i < lis.length; i++) {
+    lis[i].classList.add("same");
+    lis[i].querySelector(".tag").textContent = "unchanged";
+    await sleep(120);
+  }
+  var li = document.createElement("li");
+  li.className = "new";
+  li.innerHTML = "<span>EmployeeDiscount.java</span><span class=\"tag\">new file</span>";
+  withFilesEl.appendChild(li);
+  withNew.style.display = "block";
+  var srcLines = S.employee.src.split("\n");
+  withNew.innerHTML = srcLines.map(function () { return '<span class="ln add"> </span>'; }).join("");
+  var wSpans = withNew.querySelectorAll(".ln");
+  for (var j = 0; j < srcLines.length; j++) await typeInto(wSpans[j], srcLines[j], "add");
+  var ws = document.getElementById("withScore");
+  ws.className = "score good"; ws.textContent = "1 new class. 0 lines changed in existing files.";
+
+  /* --- Without Strategy: open the old class and type new branches into it --- */
+  var woLi = withoutFilesEl.querySelector("li");
+  woLi.classList.add("edited");
+  woLi.querySelector(".tag").textContent = "editing existing code";
+  withoutNew.style.display = "block";
+  var NEW = buildNoPattern(true);
+  withoutNew.innerHTML = NEW.map(function (l) { return '<span class="ln">' + (l.isNew ? " " : (hl(l.text) || " ")) + "</span>"; }).join("");
+  var oSpans = withoutNew.querySelectorAll(".ln");
+  for (var k = 0; k < NEW.length; k++) {
+    if (!NEW[k].isNew) continue;
+    oSpans[k].scrollIntoView({ block: "nearest", behavior: "smooth" });
+    await typeInto(oSpans[k], NEW[k].text, "add");
+  }
+  woLi.querySelector(".tag").textContent = "edited in 2 places";
+  var wos = document.getElementById("withoutScore");
+  wos.className = "score bad"; wos.textContent = "4 lines added inside a class that already worked. Every discount needs retesting.";
+
+  if (available.indexOf("employee") === -1) { available.push("employee"); renderPalette("employee"); }
+  document.getElementById("resetBtn").style.display = "inline-block";
+  document.getElementById("addHint").style.display = "block";
+});
+
+document.getElementById("resetBtn").addEventListener("click", function () {
+  resetCompare();
+  available = ["none", "ten", "five", "holiday"];
+  if (current === "employee") tryPlug("none");
+  renderPalette();
+  document.getElementById("addBtn").disabled = false;
+  this.style.display = "none";
+  document.getElementById("addHint").style.display = "none";
+});
+
+/* ================= Bug lab ================= */
+var BUGS = [
+  {
+    name: "Forgot the second method",
+    without: [
+      { text: "public String label(String type) {" },
+      { text: "    if (type.equals(\"none\")) {" },
+      { text: "        return \"No discount\";" },
+      { text: "    ..." },
+      { text: "    } else if (type.equals(\"holiday\")) {" },
+      { text: "        return \"Holiday sale (25% off)\";" },
+      { text: "    // forgot to add \"employee\" here", cls: "miss" },
+      { text: "    } else {" },
+      { text: "        throw new IllegalArgumentException(\"Unknown: \" + type);" },
+      { text: "    }" },
+      { text: "}" }
+    ],
+    withoutLog: [
+      ["checkout.total(\"employee\", new BigDecimal(\"50.00\"))", "cmd"], ["  => $35.00", "out"],
+      ["checkout.label(\"employee\")", "cmd"],
+      ["Exception in thread \"main\" java.lang.IllegalArgumentException: Unknown: employee", "err"]
+    ],
+    withoutNote: "It compiled, so it looked done. It crashes while running, in front of a customer.",
+    with: [
+      { text: "public class EmployeeDiscount implements DiscountStrategy {" },
+      { text: "" },
+      { text: "    @Override" },
+      { text: "    public BigDecimal applyDiscount(BigDecimal subtotal) {" },
+      { text: "        return subtotal.multiply(BigDecimal.valueOf(0.70)).setScale(2, RoundingMode.HALF_UP);" },
+      { text: "    }" },
+      { text: "    // forgot getName()", cls: "miss" },
+      { text: "}" }
+    ],
+    withLog: [
+      ["javac EmployeeDiscount.java", "cmd"],
+      ["error: EmployeeDiscount is not abstract and does not override abstract method getName() in DiscountStrategy", "err"]
+    ],
+    withNote: "Same mistake, but the compiler catches it right away. The interface won't let you forget a method."
+  },
+  {
+    name: "Copy-paste mistake",
+    without: [
+      { text: "} else if (type.equals(\"holiday\")) {" },
+      { text: "    return subtotal.multiply(BigDecimal.valueOf(0.75)).setScale(2, RoundingMode.HALF_UP);" },
+      { text: "} else if (type.equals(\"employee\")) {   // copied from above" },
+      { text: "    return subtotal.multiply(BigDecimal.valueOf(0.75)).setScale(2, RoundingMode.HALF_UP);   // forgot to change to 0.70", cls: "miss" },
+      { text: "} else {" }
+    ],
+    withoutLog: [
+      ["checkout.total(\"employee\", new BigDecimal(\"50.00\"))", "cmd"], ["  => $37.50   (should be $35.00)", "err"]
+    ],
+    withoutNote: "No error at all. Employees quietly get the wrong price until someone checks the receipts. And to test it, you have to test the whole Checkout class.",
+    with: [
+      { text: "public class EmployeeDiscount implements DiscountStrategy {" },
+      { text: "    @Override" },
+      { text: "    public BigDecimal applyDiscount(BigDecimal subtotal) {" },
+      { text: "        return subtotal.multiply(BigDecimal.valueOf(0.75)).setScale(2, RoundingMode.HALF_UP);   // same mistake", cls: "miss" },
+      { text: "    }" },
+      { text: "}" }
+    ],
+    withLog: [
+      ["new EmployeeDiscount().applyDiscount(new BigDecimal(\"50.00\"))", "cmd"], ["  => $37.50   test FAILED: expected $35.00", "err"]
+    ],
+    withNote: "Strategy can't stop bad math, but the mistake is trapped in one small class. One quick test of that class finds it."
+  },
+  {
+    name: "Broke something that already worked",
+    without: [
+      { text: "} else if (type.equals(\"holiday\")) {" },
+      { text: "    return subtotal.multiply(BigDecimal.valueOf(0.70)).setScale(2, RoundingMode.HALF_UP);   // edited the wrong line!", cls: "miss" },
+      { text: "} else if (type.equals(\"employee\")) {" },
+      { text: "    return subtotal.multiply(BigDecimal.valueOf(0.70)).setScale(2, RoundingMode.HALF_UP);" },
+      { text: "} else {" }
+    ],
+    withoutLog: [
+      ["checkout.total(\"employee\", new BigDecimal(\"50.00\"))", "cmd"], ["  => $35.00", "out"],
+      ["checkout.total(\"holiday\", new BigDecimal(\"50.00\"))", "cmd"], ["  => $35.00   (should be $37.50)", "err"]
+    ],
+    withoutNote: "You only meant to add a new discount, and now the holiday sale is wrong too. Every discount lives in the same method, so every edit puts all of them at risk.",
+    with: [
+      { text: "// HolidaySale.java" },
+      { text: "// You never opened this file." },
+      { text: "public class HolidaySale implements DiscountStrategy {" },
+      { text: "    ..." },
+      { text: "        return subtotal.multiply(BigDecimal.valueOf(0.75)).setScale(2, RoundingMode.HALF_UP);" },
+      { text: "    ..." },
+      { text: "}" }
+    ],
+    withLog: [
+      ["new HolidaySale().applyDiscount(new BigDecimal(\"50.00\"))", "cmd"], ["  => $37.50", "out"]
+    ],
+    withNote: "Adding EmployeeDiscount can't break HolidaySale. You never touched it."
+  }
+];
+var bugPicks = document.getElementById("bugPicks");
+var bugRun = 0;
+async function typeLog(el, lines, run) {
+  el.innerHTML = "";
+  for (var i = 0; i < lines.length; i++) {
+    await sleep(lines[i][1] === "cmd" ? 350 : 500);
+    if (run !== bugRun) return;
+    var d = document.createElement("div"); d.className = lines[i][1]; d.textContent = lines[i][0];
+    el.appendChild(d);
+  }
+}
+async function showBug(i) {
+  var run = ++bugRun;
+  Array.prototype.forEach.call(bugPicks.children, function (b, j) { b.classList.toggle("active", i === j); });
+  var b = BUGS[i];
+  render(document.getElementById("bugWithoutCode"), b.without);
+  render(document.getElementById("bugWithCode"), b.with);
+  document.getElementById("bugWithoutNote").textContent = "";
+  document.getElementById("bugWithNote").textContent = "";
+  await Promise.all([
+    typeLog(document.getElementById("bugWithoutConsole"), b.withoutLog, run),
+    typeLog(document.getElementById("bugWithConsole"), b.withLog, run)
+  ]);
+  if (run !== bugRun) return;
+  document.getElementById("bugWithoutNote").textContent = b.withoutNote;
+  document.getElementById("bugWithNote").textContent = b.withNote;
+}
+BUGS.forEach(function (b, i) {
+  var p = document.createElement("span");
+  p.className = "pick"; p.textContent = (i + 1) + ". " + b.name;
+  p.style.fontFamily = "inherit";
+  p.addEventListener("click", function () { showBug(i); });
+  bugPicks.appendChild(p);
+});
+showBug(0);
+
+/* ================= Predict the output ================= */
+render(document.getElementById("predictCode"), [
+  "Checkout checkout = new Checkout();",
+  "System.out.println(checkout.total(new BigDecimal(\"40.00\")));",
+  "",
+  "checkout.setStrategy(new FiveDollarsOff());",
+  "System.out.println(checkout.total(new BigDecimal(\"40.00\")));",
+  "System.out.println(checkout.label());"
+]);
+var CHOICES = [
+  { text: "40.00\n35.00\n$5 off", right: true,
+    why: "The checkout starts with NoDiscount, so the first total is the full 40.00. After setStrategy swaps in FiveDollarsOff, both total() and label() ask the new strategy: $40 - $5 = 35.00 and \"$5 off\"." },
+  { text: "35.00\n35.00\n$5 off", right: false,
+    why: "The discount isn't applied yet on the first line. Checkout starts with NoDiscount, so the first total is the full 40.00." },
+  { text: "40.00\n35.00\nNo discount", right: false,
+    why: "Close! The totals are right, but label() also asks the current strategy, which is now FiveDollarsOff." },
+  { text: "Compile error", right: false,
+    why: "Checkout gives the strategy a default value (new NoDiscount()), so new Checkout() works, and FiveDollarsOff implements DiscountStrategy, so setStrategy accepts it." }
+];
+var choicesEl = document.getElementById("choices");
+var fb = document.getElementById("feedback");
+CHOICES.forEach(function (c) {
+  var b = document.createElement("button");
+  b.className = "choice"; b.textContent = c.text;
+  b.addEventListener("click", function () {
+    Array.prototype.forEach.call(choicesEl.children, function (x) { x.classList.remove("right", "wrong"); });
+    b.classList.add(c.right ? "right" : "wrong");
+    fb.className = "feedback show";
+    fb.innerHTML = "<b>" + (c.right ? "Correct." : "Not quite.") + "</b> " + esc(c.why);
+  });
+  choicesEl.appendChild(b);
+});
+
+/* Checkout starts with NoDiscount plugged in, quietly */
+renderPalette();
+tryPlug("none");
+traceRun++;
+document.querySelectorAll("#trace .step").forEach(function (st) { st.classList.remove("on", "done"); });
+consoleEl.innerHTML = '<div class="muted">// new Checkout() starts with NoDiscount. Swap in another discount.</div>';
+</script>
+</body>
+</html>
