@@ -21,5 +21,9 @@ public class Main {
         for(Flyable flyingThing : thingsThatFly){
             flyingThing.fly();
         }
+
+        Flyable newThingThatFlies = new BlueJay();
+        newThingThatFlies = new Robin();
+        newThingThatFlies = new Cardinal();
     }
 }
