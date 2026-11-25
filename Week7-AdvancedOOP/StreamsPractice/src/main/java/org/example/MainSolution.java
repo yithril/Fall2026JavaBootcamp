@@ -5,7 +5,7 @@ import java.util.List;
 public class MainSolution {
     public static void main(String[] args) {
         List<Person> database = PersonRepository.getPeople();
-        
+
         // 1. Print the full names of all people who live in Texas.
         database.stream()
                 .filter(person -> person.getState().equalsIgnoreCase("Texas"))

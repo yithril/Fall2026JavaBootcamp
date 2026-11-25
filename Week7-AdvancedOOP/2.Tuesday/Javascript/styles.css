@@ -1,0 +1,16 @@
+/* This is a comment */
+
+/*Targeting by id is # */
+#secondHeader {
+    background-color: tomato;
+}
+
+/* targeting by class is . */
+.redParagraph {
+    background-color: red;
+    font-size: 20px;
+}
+
+.blueStrikeThrough {
+    text-decoration: line-through;
+}
